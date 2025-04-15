@@ -334,7 +334,19 @@ const getBlogPost = async (slug: string): Promise<Post> => {
  //     },
  //   ],
  // }
- const data = await fetch(`https://ai-blog-adsense-api.onrender.com/api/v1/posts/${slug}`, { cache: 'no-store' })
+ const data = await fetch(`${process.env.HOST_URL}/api/v1/posts/${slug}`, {
+  method: 'GET',
+  cache: 'no-store',
+  headers: {
+   'Content-Type': 'application/json',
+   'Cache-Control': 'no-cache, no-store, must-revalidate',
+   'Pragma': 'no-cache',
+   'Expires': '0',
+  },
+  next: {
+   revalidate: 0
+  }
+ })
  const post = await data.json()
  return post
 }

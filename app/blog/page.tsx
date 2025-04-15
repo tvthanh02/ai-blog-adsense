@@ -75,7 +75,19 @@ export default async function BlogPage() {
  //   },
  // ]
 
- const response = await fetch("https://ai-blog-adsense-api.onrender.com/api/v1/posts");
+ const response = await fetch(`${process.env.HOST_URL}/api/v1/posts`, {
+  method: 'GET',
+  cache: 'no-store',
+  headers: {
+   'Content-Type': 'application/json',
+   'Cache-Control': 'no-cache, no-store, must-revalidate',
+   'Pragma': 'no-cache',
+   'Expires': '0',
+  },
+  next: {
+   revalidate: 0
+  }
+ });
  const posts: Post[] = await response.json();
 
 
