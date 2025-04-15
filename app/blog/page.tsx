@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import AdPlaceholder from "@/components/ad-placeholder"
 import { Post } from "./[slug]/page"
+import { formatDateTime } from "@/lib/utils"
 
 export default async function BlogPage() {
  const featuredPost = {
@@ -156,7 +157,7 @@ export default async function BlogPage() {
         </div>
         <div className="flex items-center">
          <Calendar className="mr-1 h-3 w-3" />
-         {post.created_at}
+         {formatDateTime(post.created_at)}
         </div>
        </div>
        <Button asChild variant="ghost" className="p-0 h-auto font-medium">

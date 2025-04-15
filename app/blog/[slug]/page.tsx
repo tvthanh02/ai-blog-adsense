@@ -11,6 +11,7 @@ import type { Metadata } from "next"
 import TableOfContents from "@/components/table-of-contents"
 import CommentSection from "@/components/comment-section"
 import AuthorBio from "@/components/author-bio"
+import { formatDateTime } from "@/lib/utils"
 
 type Props = {
  params: { slug: string }
@@ -20,7 +21,7 @@ export type Author = {
  id: string,
  name: string,
  email: string,
- image?: string,
+ avatar?: string,
  bio: string,
  created_at: string,
  updated_at: string
@@ -333,7 +334,7 @@ const getBlogPost = async (slug: string): Promise<Post> => {
  //     },
  //   ],
  // }
- const data = await fetch(`https://ai-blog-adsense-api.onrender.com/api/v1/posts/${slug}`)
+ const data = await fetch(`https://ai-blog-adsense-api.onrender.com/api/v1/posts/${slug}`, { cache: 'no-store' })
  const post = await data.json()
  return post
 }
@@ -404,7 +405,7 @@ export default async function BlogPostPage({ params }: Props) {
    title: item.content,
   }))
 
- let imageArticleindex = 0;
+ let imageArticleIndex = 0;
 
  return (
   <div className="container px-4 py-12 md:px-6 md:py-24">
@@ -426,7 +427,7 @@ export default async function BlogPostPage({ params }: Props) {
      <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 mb-6">
       <div className="flex items-center gap-3">
        <Avatar>
-        <AvatarImage src={post.author.image ?? "/placeholder.svg?height=100&width=100"} alt={post.author.name} />
+        <AvatarImage src={post.author.avatar ?? "/placeholder.svg?height=100&width=100"} alt={post.author.name} />
         <AvatarFallback>
          {post.author.name
           .split(" ")
@@ -443,11 +444,11 @@ export default async function BlogPostPage({ params }: Props) {
       <div className="flex items-center gap-4 text-sm text-muted-foreground">
        <div className="flex items-center">
         <Calendar className="mr-1 h-4 w-4" />
-        {post.created_at}
+        {formatDateTime(post.created_at)}
        </div>
        <div className="flex items-center">
         <Clock className="mr-1 h-4 w-4" />
-        {post.readTime}
+        {post.readTime ?? "8 minutes"}
        </div>
       </div>
      </div>
@@ -513,8 +514,8 @@ export default async function BlogPostPage({ params }: Props) {
           </h2>
          )
         } else if (item.type === "image") {
-         const imageArticle = post?.images[imageArticleindex];
-         imageArticleindex++;
+         const imageArticle = post?.images[imageArticleIndex];
+         imageArticleIndex++;
          return (
           <figure key={index} className="my-8">
            <Image
@@ -559,7 +560,7 @@ export default async function BlogPostPage({ params }: Props) {
       <div className="mt-12">
        <AuthorBio author={{
         name: post.author.name,
-        image: post.author.image ?? "",
+        avatar: post.author.avatar ?? "",
         bio: post.author.bio
        }} />
       </div>

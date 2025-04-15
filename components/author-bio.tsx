@@ -7,7 +7,7 @@ type AuthorBioProps = {
  author: {
   name: string
   role?: string
-  image: string
+  avatar?: string
   bio: string
  }
 }
@@ -17,8 +17,8 @@ export default function AuthorBio({ author }: AuthorBioProps) {
   <Card>
    <CardContent className="p-6">
     <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
-     <Avatar className="h-20 w-20">
-      <AvatarImage src={author.image} alt={author.name} />
+     <Avatar className="h-20 w-20 border border-primary">
+      <AvatarImage src={author.avatar} alt={author.name} />
       <AvatarFallback>
        {author.name
         .split(" ")
